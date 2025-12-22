@@ -51,3 +51,34 @@ export async function deleteProduct(id: string) {
     return { success: false };
   }
 }
+
+// 👇 Update an existing product
+export async function updateProduct(id: string, productData: any) {
+  try {
+    await connectToDB();
+
+    // Find the product by ID and update it with new data
+    await Product.findByIdAndUpdate(id, productData);
+    
+    // Refresh the page to show new details
+    revalidatePath('/');
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to update product:", error);
+    return { success: false };
+  }
+}
+
+// 👇 Fetch a single product (so we can fill the form later)
+export async function getProductById(id: string) {
+  try {
+    await connectToDB();
+    const product = await Product.findById(id);
+    if (!product) return null;
+    return JSON.parse(JSON.stringify(product)); // Convert to clean JSON
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

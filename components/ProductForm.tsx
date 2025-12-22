@@ -3,23 +3,32 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductValidation } from "@/lib/validations/product";
-import { createProduct } from "@/lib/actions/product.actions";
+import { createProduct, updateProduct } from "@/lib/actions/product.actions"; // 👈 Added updateProduct
 import { useState, ChangeEvent } from "react";
 import * as z from "zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // 👈 Added for redirecting
 
-export default function ProductForm() {
+// 👇 New: Define what props this form accepts
+interface ProductFormProps {
+  type?: "Create" | "Edit";
+  initialData?: any;
+}
+
+export default function ProductForm({ type = "Create", initialData }: ProductFormProps) {
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
-  const [imagePreview, setImagePreview] = useState("");
+  const [imagePreview, setImagePreview] = useState(initialData?.imageUrl || ""); // 👈 Pre-fill image
   const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(ProductValidation),
     defaultValues: {
-      name: "",
-      price: 0,
-      stock: 0,
-      description: "",
+      name: initialData?.name || "",           // 👈 Pre-fill name
+      price: initialData?.price || 0,          // 👈 Pre-fill price
+      stock: initialData?.stock || 0,          // 👈 Pre-fill stock
+      description: initialData?.description || "", // 👈 Pre-fill desc
+      imageUrl: initialData?.imageUrl || "",
     },
   });
 
@@ -43,13 +52,10 @@ export default function ProductForm() {
     }
   };
 
-  // 👇 The Function to Upload to Cloudinary
   const uploadToCloudinary = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
-    
-    // ⚠️ REPLACE 'ecommerce_preset' WITH THE PRESET NAME YOU COPIED IN STEP 1
-    formData.append("upload_preset", "ecommerce_preset"); 
+    formData.append("upload_preset", "ecommerce_preset"); // ⚠️ Check this matches your Cloudinary name!
 
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
     
@@ -58,9 +64,8 @@ export default function ProductForm() {
         method: "POST",
         body: formData,
       });
-
       const data = await res.json();
-      return data.secure_url; // Returns the internet link (https://res.cloudinary...)
+      return data.secure_url;
     } catch (error) {
       console.error("Upload failed:", error);
       throw new Error("Image upload failed");
@@ -72,25 +77,32 @@ export default function ProductForm() {
     try {
       let finalImageUrl = values.imageUrl;
 
-      // If user selected a new file, upload it to Cloudinary
       if (files.length > 0) {
         finalImageUrl = await uploadToCloudinary(files[0]);
-      } else {
-        finalImageUrl = "https://placehold.co/600x400/png"; 
       }
 
-      await createProduct({
-        ...values,
-        imageUrl: finalImageUrl,
-      });
+      // 👇 THE BIG SWITCH: Check if we are Creating or Editing
+      if (type === "Edit") {
+        await updateProduct(initialData._id, {
+            ...values,
+            imageUrl: finalImageUrl,
+        });
+        alert("✨ Product Updated!");
+        router.push("/"); // Go back to home
+      } else {
+        await createProduct({
+          ...values,
+          imageUrl: finalImageUrl || "https://placehold.co/600x400/png",
+        });
+        alert("✨ Product Created!");
+        form.reset();
+        setImagePreview("");
+        setFiles([]);
+      }
 
-      alert("✨ Product Created Successfully!");
-      form.reset();
-      setImagePreview("");
-      setFiles([]);
     } catch (error) {
       console.error(error);
-      alert("Failed to create product");
+      alert("Something went wrong");
     } finally {
       setIsUploading(false);
     }
@@ -101,7 +113,9 @@ export default function ProductForm() {
       onSubmit={form.handleSubmit(onSubmit)} 
       className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100"
     >
-      <h3 className="text-lg font-bold text-slate-800 mb-6 border-b pb-2">Add New Item</h3>
+      <h3 className="text-lg font-bold text-slate-800 mb-6 border-b pb-2">
+        {type === "Edit" ? "Edit Product" : "Add New Item"}
+      </h3>
       
       <div className="space-y-5">
         
@@ -155,7 +169,7 @@ export default function ProductForm() {
           disabled={isUploading || form.formState.isSubmitting}
           className="w-full py-3 px-6 rounded-lg text-white font-bold text-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg disabled:opacity-50"
         >
-          {isUploading ? "Uploading Image..." : (form.formState.isSubmitting ? "Saving..." : "🚀 Create Product")}
+          {isUploading ? "Uploading Image..." : (form.formState.isSubmitting ? "Saving..." : (type === "Edit" ? "Update Product" : "Create Product"))}
         </button>
       </div>
     </form>

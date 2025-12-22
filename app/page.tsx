@@ -2,6 +2,7 @@ import ProductForm from "@/components/ProductForm";
 import { getAllProducts } from "@/lib/actions/product.actions";
 import DeleteButton from "@/components/DeleteButton";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
   const products = await getAllProducts();
@@ -54,11 +55,23 @@ export default async function Home() {
                     </div>
 
                     <div className="flex items-center gap-4">
+                      {/* 1. Price Section */}
                       <div className="text-right">
-                      <span className="block text-xl font-bold text-indigo-600">${product.price}</span>
-                      <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">Active</span>
+                        <span className="block text-xl font-bold text-indigo-600">${product.price}</span>
+                        <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">Active</span>
                       </div>
-                    <DeleteButton id={product._id.toString()} />
+
+                      {/* 2. Buttons Section (Edit + Delete) */}
+                      <div className="flex items-center gap-2">
+                        <Link 
+                          href={`/products/${product._id}`} 
+                          className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors"
+                          title="Edit"
+                        >
+                          ✏️
+                        </Link>
+                        <DeleteButton id={product._id.toString()} />
+                      </div>
                     </div>
 
                   </div>
