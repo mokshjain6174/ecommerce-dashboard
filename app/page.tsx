@@ -3,6 +3,7 @@ import { getAllProducts } from "@/lib/actions/product.actions";
 import DeleteButton from "@/components/DeleteButton";
 import Image from "next/image";
 import Link from "next/link";
+import StockChart from "@/components/StockChart";
 
 export default async function Home() {
   const products = await getAllProducts();
@@ -30,6 +31,10 @@ export default async function Home() {
 
           {/* Right Side: The List (Takes up 7 columns) */}
           <div className="md:col-span-7 space-y-6">
+            {/* 👇 NEW: ADD THIS CHART BLOCK HERE */}
+            <div className="mb-6">
+              <StockChart data={products} />
+            </div>
             <h2 className="text-2xl font-bold text-slate-700 border-l-4 border-indigo-500 pl-4">
               Live Inventory
             </h2>
