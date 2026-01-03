@@ -4,6 +4,11 @@ import Link from "next/link";
 type Props = {
   params: Promise<{ id: string }>
 }
+/**
+ * EditProductPage (Server Component)
+ * This page fetches specific product data on the server before rendering the form.
+ * It provides a seamless "edit" experience by pre-filling the existing data.
+ */
 export default async function EditProductPage({ params }:Props) {
   // 1. Get the ID from the URL
   const { id } = await params;

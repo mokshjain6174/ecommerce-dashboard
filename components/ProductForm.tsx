@@ -4,13 +4,22 @@ import { useState } from "react";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
 import { useRouter } from "next/navigation";
 
-
+/**
+ * Global Constants
+ * Defines the available product categories for the dropdown menu.
+ */
 const CATEGORIES = ["Electronics", "Clothing", "Home & Garden", "Books", "Toys", "General"];
 
+/**
+ * ProductForm Component
+ * A multi-purpose form used for both creating new inventory items 
+ * and editing existing ones via the 'initialData' prop.
+ */
 export default function ProductForm({ initialData }: { initialData?: any }) {
+  
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-
+  // --- Form State Management ---
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
     price: initialData?.price || 0,
@@ -20,13 +29,19 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
     description: initialData?.description || "",
     imageUrl: initialData?.imageUrl || "",
   });
-
+  /**
+   * Generic input handler for text, number, and select fields.
+   */
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 👇 NEW: Handles selecting a file from your computer
+  /**
+   * Client-Side Image Processing
+   * Converts a selected file into a Base64 string for previewing and
+   * eventual upload to Cloudinary via Server Actions.
+   */
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -35,7 +50,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             alert("File is too large. Please choose an image under 2MB.");
             return;
         }
-      // Convert file to a data URL (Base64 string)
+      // Read the file and update the state with the Data URL
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData((prev) => ({ ...prev, imageUrl: reader.result as string }));
@@ -44,20 +59,27 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
     }
   };
 
-  // 👇 NEW: Removes the selected image
+  /**
+   * Image Reset Handler
+   */
   const removeImage = () => {
       setFormData((prev) => ({ ...prev, imageUrl: "" }));
   };
 
+  /**
+   * Form Submission Logic
+   * Orchestrates the call to either 'create' or 'update' Server Actions.
+   */
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
 
     if (initialData) {
+      // Mode: EDIT - Updates existing MongoDB document
       await updateProduct(initialData._id, formData);
-      // router.refresh(); 
-      // router.push("/");
+      
     } else {
+      // Mode: CREATE - Adds new document and clears the form for the next entry
       await createProduct(formData);
       setFormData({ name: "", price: 0, stock: 0, soldCount: 0, category: "General", description: "", imageUrl: "" });
       router.refresh();
@@ -74,7 +96,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Name */}
+        {/* Product Name Field */}
         <div>
           <label className="block text-sm font-medium text-slate-700">Product Name</label>
           <input
@@ -87,7 +109,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           />
         </div>
 
-        {/* Category Dropdown */}
+        {/* Dynamic Category Selection */}
         <div>
           <label className="block text-sm font-medium text-slate-700">Category</label>
           <select
@@ -102,7 +124,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </select>
         </div>
 
-        {/* 3-Column Grid */}
+        {/* Numeric Data Grid (Price, Stock, Sales) */}
         <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-slate-700">Price ($)</label>
@@ -141,7 +163,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           </div>
         </div>
 
-        {/* Description */}
+        {/* Product Description */}
         <div>
           <label className="block text-sm font-medium text-slate-700">Description</label>
           <textarea
@@ -153,7 +175,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
           />
         </div>
 
-        {/* 👇 NEW: Modern File Uploader UI */}
+        {/* --- Advanced Image Uploader --- */}
         <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">Product Image</label>
             {!formData.imageUrl ? (
@@ -173,7 +195,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
                 </label>
                 </div>
             ) : (
-                // Preview State
+                /* Image Preview State */
                 <div className="relative w-full h-48 rounded-xl overflow-hidden border border-slate-200 bg-slate-50 group">
                     <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-contain" />
                     {/* Remove Button (shows on hover) */}
@@ -191,7 +213,7 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
             )}
         </div>
 
-        {/* Submit Button */}
+        {/* Action Button */}
         <button
           type="submit"
           disabled={loading}

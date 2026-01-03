@@ -2,11 +2,26 @@
 
 import RevenueChart from "./RevenueChart"; // 👈 Import the new chart
 
+/**
+ * SalesAnalytics Component
+ * Provides a high-level overview of store performance, including 
+ * total revenue metrics, visual charts, and a product leaderboard.
+ */
 export default function SalesAnalytics({ products }: { products: any[] }) {
-  // 1. Calculate Total Revenue
+  /**
+   * Financial Aggregation
+   * Calculates the cumulative lifetime revenue by iterating through all products
+   * and multiplying their individual price by the number of units sold.
+   */
   const totalRevenue = products.reduce((acc, curr) => acc + (curr.soldCount * curr.price), 0);
 
-  // 2. Find Top Selling Products
+  /**
+   * Leaderboard Logic
+   * 1. Creates a shallow copy of the products array.
+   * 2. Sorts products by 'soldCount' in descending order.
+   * 3. Filters out items with zero sales to keep the list relevant.
+   * 4. Limits the results to the top 5 performers.
+   */
   const topSellers = [...products]
     .sort((a, b) => b.soldCount - a.soldCount)
     .filter(p => p.soldCount > 0)
@@ -15,14 +30,15 @@ export default function SalesAnalytics({ products }: { products: any[] }) {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       
-      {/* Header */}
+      {/* --- Page Header --- */}
       <div>
         <h2 className="text-2xl font-bold text-slate-800">Sales Analytics</h2>
         <p className="text-slate-500">Revenue and performance insights</p>
       </div>
 
-      {/* 🟢 Row 1: Key Stats Card */}
+      {/* --- Key Metrics Row --- */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Revenue Hero Card */}
         <div className="bg-gradient-to-r from-emerald-500 to-teal-600 p-8 rounded-3xl text-white shadow-xl shadow-emerald-200 relative overflow-hidden">
           <div className="relative z-10">
              <h3 className="text-emerald-100 text-sm font-bold uppercase tracking-wider">Total Estimated Revenue</h3>
@@ -34,13 +50,13 @@ export default function SalesAnalytics({ products }: { products: any[] }) {
         </div>
       </div>
 
-      {/* 🟢 Row 2: Chart & Leaderboard */}
+      {/* --- Visualizations & Rankings Row --- */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        {/* LEFT: New Revenue Chart */}
+        {/* Revenue Distribution Chart */}
         <RevenueChart products={products} />
 
-        {/* RIGHT: Top Products Table */}
+        {/* Product Leaderboard Card */}
         <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm h-full">
             <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg font-bold text-slate-800">🏆 Top Performers</h3>

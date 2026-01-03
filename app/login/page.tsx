@@ -4,6 +4,11 @@ import { login } from "@/lib/actions/auth.actions";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
+/**
+ * SubmitButton Component
+ * Separation Requirement: We extract this into a sub-component so we can use
+ * the `useFormStatus` hook to detect when the parent <form> is submitting.
+ */
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
@@ -19,6 +24,11 @@ function SubmitButton() {
 
 export default function LoginPage() {
   const [error, setError] = useState("");
+  /**
+   * Handle Form Submission
+   * Bridges the Client Event to the Server Action.
+   * If the login fails, the server returns an error object which we display.
+   */
 
   const handleSubmit = async (formData: FormData) => {
     const result = await login(formData);
@@ -37,11 +47,12 @@ export default function LoginPage() {
             AP
           </div>
         </div>
-
+        {/* --- Header Text --- */}
         <h1 className="text-2xl font-bold text-center text-slate-800 mb-2">Welcome Back</h1>
         <p className="text-slate-400 text-center mb-8 text-sm">Enter your admin credentials to access</p>
-
+        {/* --- Login Form --- */}
         <form action={handleSubmit} className="space-y-4">
+          {/* Email Input */}
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Email</label>
             <input 
@@ -49,11 +60,11 @@ export default function LoginPage() {
               type="email" 
               required 
               className="w-full p-3 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 placeholder:text-slate-400"
-              // 👇 CHANGED: Generic placeholder
               placeholder="Enter your email" 
             />
           </div>
 
+          {/* Password Input */}
           <div>
             <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Password</label>
             <input 
@@ -70,6 +81,8 @@ export default function LoginPage() {
               ⚠ {error}
             </div>
           )}
+
+          {/* Submit Button (contains loading state logic) */}
 
           <SubmitButton />
         </form>

@@ -5,20 +5,29 @@ import Product from "@/lib/models/Product";
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
 import { redirect } from "next/navigation";
-// ☁️ CONFIGURE CLOUDINARY
+/**
+ * Cloudinary Configuration
+ * image uploads from the server side.
+ */
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// 1. CREATE
+/**
+ * Create Product
+ * Handles the end-to-end process of adding a new item:
+ * 1. Connects to the database.
+ * 2. Uploads the image to Cloudinary if a Base64 string is provided.
+ * 3. Saves the product document to MongoDB.
+ * 4. Refreshes the homepage data.
+ */
 export async function createProduct(productData: any) {
   try {
     await connectToDB();
 
-    // 👇 CLOUDINARY LOGIC:
-    // If the image is a "Base64" string (looks like "data:image..."), upload it!
+    // Image Upload Logic:
     if (productData.imageUrl && productData.imageUrl.startsWith("data:image")) {
        const uploadResponse = await cloudinary.uploader.upload(productData.imageUrl, {
          folder: "ecommerce_products", // Folder name in Cloudinary
@@ -28,6 +37,7 @@ export async function createProduct(productData: any) {
     }
 
     const newProduct = await Product.create(productData);
+    // Purge the Next.js cache for the homepage to show the new item immediately
     revalidatePath("/");
     return { success: true, id: newProduct._id.toString() }; 
   } catch (error) {
@@ -36,7 +46,11 @@ export async function createProduct(productData: any) {
   }
 }
 
-// 2. GET ALL
+/**
+ * Get All Products
+ * Retrieves the entire inventory from MongoDB, sorted by newest first.
+ * Uses JSON stringify/parse to prevent Next.js "Serializing" errors with Mongo IDs.
+ */
 export async function getAllProducts() {
   try {
     await connectToDB();
@@ -48,7 +62,10 @@ export async function getAllProducts() {
   }
 }
 
-// 3. GET ONE
+/**
+ * Get Product By ID
+ * Fetches a single product document for the Edit page or details view.
+ */
 export async function getProductById(productId: string) {
   try {
     await connectToDB();
@@ -61,7 +78,10 @@ export async function getProductById(productId: string) {
   }
 }
 
-// 4. UPDATE
+/**
+ * Update Product
+ * Updates an existing document and manages navigation/cache purging.
+ */
 export async function updateProduct(id: string, productData: any) {
   try {
     await connectToDB();
@@ -70,15 +90,15 @@ export async function updateProduct(id: string, productData: any) {
 
     await Product.findByIdAndUpdate(id, productData);
 
+    // Revalidate both the list view and the specific edit page
     revalidatePath("/"); 
     revalidatePath(`/products/${id}`);
 
-    // 👇 2. ADD THIS! 
-    // This tells the browser: "The data changed. Go to home immediately."
+    // Redirect to dashboard after successful update
     redirect("/"); 
 
   } catch (error) {
-    // ⚠️ IMPORTANT: Redirects behave like "errors" in Next.js.
+    
     // We must catch the redirect error and re-throw it, or the redirect won't happen.
     if ((error as Error).message === "NEXT_REDIRECT") {
       throw error;
@@ -89,7 +109,10 @@ export async function updateProduct(id: string, productData: any) {
   }
 }
 
-// 5. SELL
+/**
+ * Sell Product
+ * Atomically updates stock and soldCount when a sale is recorded.
+ */
 export async function sellProduct(productId: string, quantity: number = 1) {
   try {
     await connectToDB();
@@ -108,7 +131,10 @@ export async function sellProduct(productId: string, quantity: number = 1) {
   }
 }
 
-// 6. DELETE
+/**
+ * Delete Product
+ * Permanently removes a product from the database.
+ */
 export async function deleteProduct(id: string) {
   try {
     await connectToDB();

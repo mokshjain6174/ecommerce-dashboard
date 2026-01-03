@@ -10,8 +10,18 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+/**
+ * StockChart Component
+ * Visualizes current inventory levels using a Bar Chart.
+ * This helps administrators quickly identify which products are well-stocked 
+ * and which are nearing depletion.
+ */
 export default function StockChart({ data }: { data: any[] }) {
-  // 1. Prepare Data
+  /**
+   * Data Preparation
+   * Extracts the necessary fields (name and stock) from the product objects
+   * to create a clean dataset specifically for Recharts consumption.
+   */
   const chartData = data.map((item) => ({
     name: item.name,
     stock: item.stock,
@@ -30,13 +40,16 @@ export default function StockChart({ data }: { data: any[] }) {
       <h3 className="text-lg font-bold text-slate-800 mb-6">📦 Stock Levels</h3>
       
       <div className="h-64 w-full">
+        {/* ResponsiveContainer allows the chart to scale with the dashboard grid */}
         <ResponsiveContainer width="100%" height="100%">
           <BarChart 
             data={chartData} 
             margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
           >
+            {/* Background Grid: Horizontal lines only for a modern, clean look */}
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
             
+            {/* X-Axis Configuration */}
             <XAxis 
               dataKey="name" 
               axisLine={false} 
@@ -45,13 +58,14 @@ export default function StockChart({ data }: { data: any[] }) {
               dy={15}
               tickFormatter={(value) => value.length > 8 ? `${value.slice(0, 8)}..` : value}
             />
-            
+            {/* Y-Axis Configuration */}
             <YAxis 
               axisLine={false} 
               tickLine={false} 
               tick={{ fill: '#94a3b8', fontSize: 11 }}
             />
             
+            {/* Custom Interactive Tooltip */}
             <Tooltip 
               cursor={{ fill: '#f8fafc' }}
               contentStyle={{ 
@@ -60,11 +74,12 @@ export default function StockChart({ data }: { data: any[] }) {
                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                 backgroundColor: '#ffffff',
               }}
-              // 👇 THE FIX: Force text to be dark!
+              /* Styles for data points inside the tooltip */
               itemStyle={{ color: '#1e293b', fontWeight: 'bold' }} 
               labelStyle={{ color: '#64748b', marginBottom: '0.25rem' }}
             />
             
+            {/* Bar Styling: Rounded top corners and Indigo brand color */}
             <Bar 
               dataKey="stock" 
               fill="#6366f1" 
