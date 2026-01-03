@@ -12,9 +12,9 @@
     "@hookform/resolvers": "^5.2.2",
     "cloudinary": "^2.8.0",
     "mongoose": "^8.20.4",
-    "next": "15.1.0",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "next": "^16.1.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-hook-form": "^7.69.0",
     "recharts": "^3.6.0",
     "zod": "^4.2.1"

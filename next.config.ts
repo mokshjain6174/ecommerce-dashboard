@@ -1,10 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "placehold.co" },
-      { protocol: "https", hostname: "res.cloudinary.com" }, // 👈 Cloudinary Allowed
+      { protocol: "https", hostname: "placeholder.co" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
     dangerouslyAllowSVG: true,
   },
@@ -14,14 +13,9 @@ const nextConfig: NextConfig = {
     },
   },
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
     ignoreBuildErrors: true,
   },
 };
