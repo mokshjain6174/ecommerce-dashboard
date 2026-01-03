@@ -6,11 +6,13 @@ import StockChart from "@/components/StockChart";
 import ProductList from "@/components/ProductList";
 
 export default function Dashboard({ products }: { products: any[] }) {
+  const safeProducts = products || [];
+
   const [activeTab, setActiveTab] = useState("overview");
 
   // Calculate Stats
-  const totalValue = products.reduce((acc, curr) => acc + (curr.price * curr.stock), 0);
-  const lowStockCount = products.filter((p) => p.stock < 5).length;
+  const totalValue = safeProducts.reduce((acc, curr) => acc + (curr.price * curr.stock), 0);
+  const lowStockCount = safeProducts.filter((p) => p.stock < 5).length;
 
   return (
     <div className="flex min-h-screen bg-slate-50">
