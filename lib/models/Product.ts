@@ -1,15 +1,17 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
+const ProductSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  description: { type: String },
   price: { type: Number, required: true },
-  stock: { type: Number, required: true, default: 0 },
-  category: { type: String },
-  imageUrl: { type: String }, 
-}, { timestamps: true }); 
+  stock: { type: Number, required: true },
+  description: { type: String },
+  imageUrl: { type: String },
+  // 👇 NEW: Category & Sales Tracking
+  category: { type: String, default: "General" }, 
+  soldCount: { type: Number, default: 0 },
+}, { timestamps: true });
 
-// "If the model already exists, use it. Otherwise, create a new one."
-const Product = mongoose.models.Product || mongoose.model("Product", productSchema);
+// Check if model exists before creating (Fixes hot-reload errors)
+const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
 
 export default Product;
