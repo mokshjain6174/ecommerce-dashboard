@@ -1,84 +1,88 @@
-"use server"; // IMPORTANT: This creates a secure server environment
+"use server";
 
-import { connectToDB } from "../mongoose";
-import Product from "../models/Product";
+import { connectToDB } from "@/lib/mongoose";
+import Product from "@/lib/models/Product"; 
 import { revalidatePath } from "next/cache";
 
-// Function 1: Create a new product
+// 1. CREATE
 export async function createProduct(productData: any) {
   try {
     await connectToDB();
-
     const newProduct = await Product.create(productData);
-
-    // Refresh the dashboard data immediately
-    revalidatePath("/"); 
-
-    return JSON.parse(JSON.stringify(newProduct));
+    revalidatePath("/");
+    return { success: true, id: newProduct._id.toString() }; 
   } catch (error) {
-    console.error("Error creating product:", error);
+    console.error("Create failed:", error);
+    return { success: false, message: "Failed to create product" };
   }
 }
 
-// Function 2: Get all products
+// 2. GET ALL (For Dashboard)
 export async function getAllProducts() {
   try {
     await connectToDB();
-    
-    // Find all products and sort them by newest first
-    const products = await Product.find().sort({ createdAt: -1 });
-    
+    const products = await Product.find({}).sort({ createdAt: -1 });
     return JSON.parse(JSON.stringify(products));
   } catch (error) {
     console.log(error);
+    return [];
   }
 }
 
-// 👇 Add this at the bottom of the file
-export async function deleteProduct(id: string) {
+// 3. GET ONE (👇 This is the function causing your error!)
+export async function getProductById(productId: string) {
   try {
     await connectToDB();
-    
-    // 1. Delete the item
-    await Product.findByIdAndDelete(id);
-    
-    // 2. Refresh the page data automatically
-    revalidatePath('/'); 
-    
-    return { success: true };
-  } catch (error) {
-    console.error("Failed to delete:", error);
-    return { success: false };
-  }
-}
-
-// 👇 Update an existing product
-export async function updateProduct(id: string, productData: any) {
-  try {
-    await connectToDB();
-
-    // Find the product by ID and update it with new data
-    await Product.findByIdAndUpdate(id, productData);
-    
-    // Refresh the page to show new details
-    revalidatePath('/');
-    
-    return { success: true };
-  } catch (error) {
-    console.error("Failed to update product:", error);
-    return { success: false };
-  }
-}
-
-// 👇 Fetch a single product (so we can fill the form later)
-export async function getProductById(id: string) {
-  try {
-    await connectToDB();
-    const product = await Product.findById(id);
+    const product = await Product.findById(productId);
     if (!product) return null;
-    return JSON.parse(JSON.stringify(product)); // Convert to clean JSON
+    return JSON.parse(JSON.stringify(product));
   } catch (error) {
     console.error(error);
     return null;
+  }
+}
+
+// 4. UPDATE
+export async function updateProduct(id: string, productData: any) {
+  try {
+    await connectToDB();
+    await Product.findByIdAndUpdate(id, productData);
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    console.error("Update failed:", error);
+    return { success: false };
+  }
+}
+
+// 5. SELL
+export async function sellProduct(productId: string, quantity: number = 1) {
+  try {
+    await connectToDB();
+    const product = await Product.findById(productId);
+    if (!product || product.stock < quantity) return { success: false };
+
+    product.stock -= quantity;
+    product.soldCount += quantity;
+    
+    await product.save();
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false };
+  }
+}
+
+// 6. DELETE
+export async function deleteProduct(id: string) {
+  try {
+    await connectToDB();
+    await Product.findByIdAndDelete(id);
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    console.error("Delete failed:", error);
+    return { success: false };
   }
 }

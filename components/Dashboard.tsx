@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import ProductForm from "@/components/ProductForm";
-import StockChart from "@/components/StockChart";
-import ProductList from "@/components/ProductList";
+import ProductForm from "./ProductForm";
+import StockChart from "./StockChart";
+import ProductList from "./ProductList";
 
 export default function Dashboard({ products }: { products: any[] }) {
   const safeProducts = products || [];
