@@ -6,6 +6,7 @@ import StockChart from "./StockChart";
 import ProductList from "./ProductList";
 import CategoryPieChart from "./CategoryPieChart";
 import SalesAnalytics from "./SalesAnalytics";
+import { logout } from "@/lib/actions/auth.actions"; // 👈 Add this
 
 export default function Dashboard({ products }: { products: any[] }) {
   const safeProducts = products || [];
@@ -77,7 +78,7 @@ export default function Dashboard({ products }: { products: any[] }) {
 
         {/* Bottom User Profile */}
         <div className="mt-auto p-4 border-t border-slate-100">
-          <div className="flex items-center gap-3 px-2">
+          <div className="flex items-center gap-3 px-2 mb-3">
             <div className="w-8 h-8 rounded-full bg-slate-200 border-2 border-white shadow-sm overflow-hidden">
                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
             </div>
@@ -86,6 +87,14 @@ export default function Dashboard({ products }: { products: any[] }) {
               <p className="text-slate-400">Store Manager</p>
             </div>
           </div>
+          
+          {/* 👇 NEW LOGOUT BUTTON */}
+          <button 
+            onClick={() => logout()}
+            className="w-full flex items-center justify-center gap-2 text-xs font-bold text-red-500 bg-red-50 py-2 rounded-lg hover:bg-red-100 transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
 
       </aside>
