@@ -12,7 +12,7 @@ export async function login(formData: FormData) {
     email === process.env.ADMIN_EMAIL && 
     password === process.env.ADMIN_PASSWORD
   ) {
-    // 👇 FIX: Await the cookies() function first!
+    
     const cookieStore = await cookies();
     
     // 2. Success! Set a secure cookie (The "Stamp")
@@ -22,7 +22,7 @@ export async function login(formData: FormData) {
       maxAge: 60 * 60 * 24, // 1 Day
       path: "/",
     });
-    
+
     redirect("/");
   } else {
     // 3. Failure

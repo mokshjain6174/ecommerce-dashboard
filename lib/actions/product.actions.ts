@@ -1,6 +1,6 @@
 "use server";
 
-import { connectToDB } from "@/lib/mongoose";
+import { connectToDB } from "../mongoose";
 import Product from "@/lib/models/Product"; 
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";

@@ -1,25 +1,28 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI=process.env.MONGODB_URI; 
-
-let isConnected = false; // track the connection
+let isConnected = false; // Track the connection status
 
 export const connectToDB = async () => {
   mongoose.set('strictQuery', true);
 
-  if (!MONGODB_URI) return console.log('MONGODB_URI is missing');
+  if (!process.env.MONGODB_URI) {
+    return console.log('MISSING MONGODB_URI');
+  }
 
   if (isConnected) {
-    console.log('=> using existing database connection');
+    console.log('MongoDB is already connected');
     return;
   }
 
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: "Cluster02", // Double check your DB name in Atlas!
+      bufferCommands: false, // <--- CRITICAL FIX FOR TIMEOUTS
+    });
 
     isConnected = true;
-    console.log('MongoDB Connected Successfully! 🚀');
+    console.log('MongoDB connected');
   } catch (error) {
-    console.log('MongoDB Connection Failed:', error);
+    console.log('MongoDB connection error:', error);
   }
 }
