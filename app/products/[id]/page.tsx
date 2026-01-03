@@ -1,10 +1,12 @@
 import { getProductById } from "@/lib/actions/product.actions";
 import ProductForm from "@/components/ProductForm";
 import Link from "next/link";
-
-export default async function EditProductPage({ params }: { params: { id: string } }) {
+type Props = {
+  params: Promise<{ id: string }>
+}
+export default async function EditProductPage({ params }:Props) {
   // 1. Get the ID from the URL
-  const { id } = params;
+  const { id } = await params;
 
   // 2. Fetch the product data
   const product = await getProductById(id);

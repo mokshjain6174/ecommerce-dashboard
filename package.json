@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "cloudinary": "^2.8.0",
     "mongoose": "^8.20.4",
     "next": "15.1.0",
     "react": "19.2.3",

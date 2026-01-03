@@ -3,11 +3,30 @@
 import { connectToDB } from "@/lib/mongoose";
 import Product from "@/lib/models/Product"; 
 import { revalidatePath } from "next/cache";
+import { v2 as cloudinary } from "cloudinary";
+
+// ☁️ CONFIGURE CLOUDINARY
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // 1. CREATE
 export async function createProduct(productData: any) {
   try {
     await connectToDB();
+
+    // 👇 CLOUDINARY LOGIC:
+    // If the image is a "Base64" string (looks like "data:image..."), upload it!
+    if (productData.imageUrl && productData.imageUrl.startsWith("data:image")) {
+       const uploadResponse = await cloudinary.uploader.upload(productData.imageUrl, {
+         folder: "ecommerce_products", // Folder name in Cloudinary
+       });
+       // Replace the long Base64 string with the short Cloudinary URL
+       productData.imageUrl = uploadResponse.secure_url;
+    }
+
     const newProduct = await Product.create(productData);
     revalidatePath("/");
     return { success: true, id: newProduct._id.toString() }; 
@@ -17,7 +36,7 @@ export async function createProduct(productData: any) {
   }
 }
 
-// 2. GET ALL (For Dashboard)
+// 2. GET ALL
 export async function getAllProducts() {
   try {
     await connectToDB();
@@ -29,7 +48,7 @@ export async function getAllProducts() {
   }
 }
 
-// 3. GET ONE (👇 This is the function causing your error!)
+// 3. GET ONE
 export async function getProductById(productId: string) {
   try {
     await connectToDB();
@@ -46,6 +65,15 @@ export async function getProductById(productId: string) {
 export async function updateProduct(id: string, productData: any) {
   try {
     await connectToDB();
+
+    // 👇 CLOUDINARY LOGIC FOR EDITING:
+    if (productData.imageUrl && productData.imageUrl.startsWith("data:image")) {
+       const uploadResponse = await cloudinary.uploader.upload(productData.imageUrl, {
+         folder: "ecommerce_products",
+       });
+       productData.imageUrl = uploadResponse.secure_url;
+    }
+
     await Product.findByIdAndUpdate(id, productData);
     revalidatePath("/");
     return { success: true };
