@@ -33,18 +33,16 @@ export default function StockChart({ data }: { data: any[] }) {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart 
             data={chartData} 
-            // 👇 ADDED SPACE: Increased margins so text isn't cut off
             margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
           >
-            {/* Soft Grid Lines */}
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
             
             <XAxis 
               dataKey="name" 
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 500 }} // Lighter & Smaller font
-              dy={15} // Pushes text down slightly for breathing room
+              tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 500 }}
+              dy={15}
               tickFormatter={(value) => value.length > 8 ? `${value.slice(0, 8)}..` : value}
             />
             
@@ -59,15 +57,19 @@ export default function StockChart({ data }: { data: any[] }) {
               contentStyle={{ 
                 borderRadius: '12px', 
                 border: '1px solid #e2e8f0', 
-                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' 
+                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                backgroundColor: '#ffffff',
               }}
+              // 👇 THE FIX: Force text to be dark!
+              itemStyle={{ color: '#1e293b', fontWeight: 'bold' }} 
+              labelStyle={{ color: '#64748b', marginBottom: '0.25rem' }}
             />
             
             <Bar 
               dataKey="stock" 
               fill="#6366f1" 
-              radius={[6, 6, 0, 0]} // Softer rounded corners
-              barSize={32}          // Thinner, more elegant bars
+              radius={[6, 6, 0, 0]} 
+              barSize={32}
             />
           </BarChart>
         </ResponsiveContainer>
