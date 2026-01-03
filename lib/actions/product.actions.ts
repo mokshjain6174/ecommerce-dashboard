@@ -4,7 +4,7 @@ import { connectToDB } from "../mongoose";
 import Product from "@/lib/models/Product"; 
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
-
+import { redirect } from "next/navigation";
 // ☁️ CONFIGURE CLOUDINARY
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -66,18 +66,24 @@ export async function updateProduct(id: string, productData: any) {
   try {
     await connectToDB();
 
-    // 👇 CLOUDINARY LOGIC FOR EDITING:
-    if (productData.imageUrl && productData.imageUrl.startsWith("data:image")) {
-       const uploadResponse = await cloudinary.uploader.upload(productData.imageUrl, {
-         folder: "ecommerce_products",
-       });
-       productData.imageUrl = uploadResponse.secure_url;
-    }
+    // ... (Your Cloudinary & Update Logic) ...
 
     await Product.findByIdAndUpdate(id, productData);
-    revalidatePath("/");
-    return { success: true };
+
+    revalidatePath("/"); 
+    revalidatePath(`/products/${id}`);
+
+    // 👇 2. ADD THIS! 
+    // This tells the browser: "The data changed. Go to home immediately."
+    redirect("/"); 
+
   } catch (error) {
+    // ⚠️ IMPORTANT: Redirects behave like "errors" in Next.js.
+    // We must catch the redirect error and re-throw it, or the redirect won't happen.
+    if ((error as Error).message === "NEXT_REDIRECT") {
+      throw error;
+    }
+    
     console.error("Update failed:", error);
     return { success: false };
   }

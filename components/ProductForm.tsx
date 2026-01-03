@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
 import { useRouter } from "next/navigation";
 
+
 const CATEGORIES = ["Electronics", "Clothing", "Home & Garden", "Books", "Toys", "General"];
 
 export default function ProductForm({ initialData }: { initialData?: any }) {
@@ -54,8 +55,8 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
     if (initialData) {
       await updateProduct(initialData._id, formData);
-      router.refresh(); 
-      router.push("/");
+      // router.refresh(); 
+      // router.push("/");
     } else {
       await createProduct(formData);
       setFormData({ name: "", price: 0, stock: 0, soldCount: 0, category: "General", description: "", imageUrl: "" });
