@@ -276,45 +276,61 @@ The Sales Analytics tab is designed to:
 
 ## 🚀 Running the Project Locally
 
-#1️⃣ You can verify Node.js installation using:
+Follow the steps below to set up and run the dashboard on your local machine.
+
+---
+
+### 1️⃣ Prerequisites
+
+Ensure the following are installed on your system:
+
+- Node.js (v18 or higher recommended)
+- npm or yarn
+- MongoDB (local or cloud instance)
+
+Check installation:
+```bash
 node -v
-
 npm -v
-
-#2️⃣ Clone the Repository
+```
+### 2️⃣ Clone the Repository
+```bash
 git clone https://github.com/mokshjain6174/ecommerce-dashboard.git
-
 cd ecommerce-dashboard
-
-#3️⃣ Install Dependencies
-
+```
+3️⃣ Install Dependencies
+```bash
 npm install
+```
 
-#4️⃣ Configure Environment Variables
+4️⃣ Configure Environment Variables
 
-Create a .env.local file in the root directory and add the following variables:
+Create a .env.local file in the project root and add:
 
+```bash
+# MongoDB
 MONGODB_URI=your_mongodb_connection_string
 
+# Cloudinary (Image Uploads)
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
-
 CLOUDINARY_API_KEY=your_api_key
-
 CLOUDINARY_API_SECRET=your_api_secret
 
+# Admin Credentials
 ADMIN_EMAIL=admin@store.com
-
 ADMIN_PASSWORD=1234
+```
 
-#5️⃣ Run the Development Server
-
+5️⃣ Run the Development Server
+```bash
 npm run dev
+```
 
-#6️⃣ Access the Application
-
-Open your browser and navigate to:
-
+6️⃣ Access the Application
+```bash
 http://localhost:3000
+```
+
 
 
 
