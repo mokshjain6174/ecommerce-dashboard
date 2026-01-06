@@ -117,14 +117,14 @@ Secure Mutation: Actions like creating or deleting products are handled via Next
 │ └── page.tsx # Main dashboard page (server component)
 │
 ├── components/
-│ ├── CategoryPieChart.tsx          # Category-wise product distribution chart
-│ ├── Dashboard.tsx                 # Core dashboard layout and logic
-│ ├── DeleteButton.tsx              # Product delete action component
-│ ├── ProductForm.tsx               # Create/Edit product form with validation
-│ ├── ProductList.tsx               # Product listing component
-│ ├── RevenueChart.tsx              # Revenue visualization chart
-│ ├── SalesAnalytics.tsx            # Sales analytics overview component
-│ └── StockChart.tsx                # Inventory and stock level chart
+│ ├── CategoryPieChart.tsx # Category-wise product distribution chart
+│ ├── Dashboard.tsx # Core dashboard layout and logic
+│ ├── DeleteButton.tsx # Product delete action component
+│ ├── ProductForm.tsx # Create/Edit product form with validation
+│ ├── ProductList.tsx # Product listing component
+│ ├── RevenueChart.tsx # Revenue visualization chart
+│ ├── SalesAnalytics.tsx # Sales analytics overview component
+│ └── StockChart.tsx # Inventory and stock level chart
 │
 ├── lib/
 │ ├── actions/
