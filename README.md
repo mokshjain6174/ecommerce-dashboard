@@ -9,6 +9,7 @@ Deployment: [https://ecommerce-dashboard-lujf.vercel.app/](https://ecommerce-das
 
 Repository: [https://github.com/mokshjain6174/ecommerce-dashboard](https://github.com/mokshjain6174/ecommerce-dashboard)
 
+Demo Video: 
 ---
 
 ## 🔐 Admin Login Credentials (Required)
@@ -103,19 +104,44 @@ Secure Mutation: Actions like creating or deleting products are handled via Next
 
 ## 📂 Project Structure
 ├── app/
-│   ├── login/           # Secure Authentication Entry
-│   ├── products/[id]/   # Dynamic SSR Edit View
-│   ├── layout.tsx       # Global Context & Structure
-│   └── page.tsx         # SSR Main Management Dashboard
+│ ├── login/
+│ │ └── page.tsx # Admin login page
+│ │
+│ ├── products/
+│ │ └── [id]/
+│ │ └── page.tsx # Server-rendered product edit page
+│ │
+│ ├── favicon.ico # Application favicon
+│ ├── globals.css # Global styles and Tailwind CSS imports
+│ ├── layout.tsx # Root layout and app-wide configuration
+│ └── page.tsx # Main dashboard page (server component)
+│
 ├── components/
-│   ├── Dashboard.tsx    # Core Business Logic UI
-│   ├── ProductForm.tsx  # Zod-Validated Data Entry
-│   ├── StockChart.tsx   # Visual Analytics Layer
+│ ├── CategoryPieChart.tsx          # Category-wise product distribution chart
+│ ├── Dashboard.tsx                 # Core dashboard layout and logic
+│ ├── DeleteButton.tsx              # Product delete action component
+│ ├── ProductForm.tsx               # Create/Edit product form with validation
+│ ├── ProductList.tsx               # Product listing component
+│ ├── RevenueChart.tsx              # Revenue visualization chart
+│ ├── SalesAnalytics.tsx            # Sales analytics overview component
+│ └── StockChart.tsx                # Inventory and stock level chart
+│
 ├── lib/
-│   ├── actions/         # Server-Side Business Logic
-│   ├── models/          # Mongoose Schema Definitions
-│   └── mongoose.ts      # Singleton DB Connection Handler
-
+│ ├── actions/
+│ │ ├── auth.actions.ts # Server Actions for admin authentication
+│ │ └── product.actions.ts # Server Actions for product CRUD operations
+│ │
+│ ├── models/
+│ │ └── Product.ts # Mongoose product schema
+│ │
+│ ├── validations/
+│ │ └── product.ts # Zod schema for product validation
+│ │
+│ └── mongoose.ts # MongoDB connection handler
+│
+├── public/ # Static assets
+├── node_modules/ # Project dependencies
+└── package.json # Project metadata and scripts
 
 ## 🧠 Key Learnings
 
@@ -128,3 +154,162 @@ Secure Mutation: Actions like creating or deleting products are handled via Next
 - Performance benefits of **SSR** over client-heavy dashboards  
 
 - Scalable project structure suitable for real production systems 
+
+
+![Dashboard Demo](public/readme-assets/dashboard.png)
+
+## 📊 Dashboard Tab – Functional Summary
+
+The **Dashboard** tab serves as the **central control panel** of the e-commerce admin system. It provides administrators with a **real-time, high-level overview** of store performance, inventory status, and product distribution, enabling quick decision-making without navigating through multiple pages.
+
+### 🔹 Key Functionalities
+
+#### ➕ Add New Product
+- Allows administrators to create new products directly from the dashboard.
+- Captures essential product details:
+  - Product name
+  - Category
+  - Price
+  - Stock quantity
+  - Units sold
+  - Description
+  - Product image upload
+- Form input is validated using server-side schemas to ensure data integrity.
+
+#### 💰 Total Inventory Value
+- Displays the **combined monetary value of all products** in inventory.
+- Helps administrators understand overall stock worth at a glance.
+
+#### ⚠️ Action Needed (Low Stock Alert)
+- Highlights products with **low stock levels**.
+- Alerts administrators to restock items before they run out.
+- Improves inventory planning and prevents sales loss.
+
+#### 📦 Total Products Count
+- Shows the total number of active products in the system.
+- Provides a quick inventory size snapshot.
+
+#### 📊 Stock Levels Visualization
+- Bar chart representing stock quantities of individual products.
+- Enables easy comparison between different products.
+- Helps identify overstocked and understocked items.
+
+#### 🧩 Category Distribution
+- Pie chart showing how products are distributed across categories.
+- Helps understand inventory balance between different product types.
+- Useful for planning category-wise expansion or reduction.
+
+### 🔄 Real-Time Updates
+- Dashboard data updates automatically after product creation, update, or deletion.
+- Ensures administrators always view the latest inventory state.
+
+---
+
+### ✅ Purpose of the Dashboard Tab
+
+The Dashboard tab is designed to:
+- Reduce administrative workload
+- Provide actionable insights at a glance
+- Centralize product management and analytics
+- Improve operational efficiency through visual data representation
+
+
+![Inventory List Demo](public/readme-assets/Inventory.png)
+
+## 📦 Inventory List Tab – Functional Summary
+
+The **Inventory List** tab provides administrators with a **detailed, real-time view of all products** available in the system. It is designed for efficient inventory monitoring, quick product updates, and proactive stock management.
+
+### 🔹 Key Functionalities
+
+#### 📋 Live Inventory Listing
+- Displays all products currently stored in the database.
+- Each product entry includes:
+  - Product image
+  - Product name
+  - Available stock quantity
+  - Product price
+  - Stock status indicator
+
+#### 🔍 Product Search
+- Search bar allows administrators to quickly locate products by name.
+- Enables efficient navigation in large inventories.
+
+#### ⚠️ Stock Status Indicators
+- Products with low stock are clearly labeled as **“Low Stock”**.
+- Products with sufficient stock are marked as **“Active”**.
+- Helps administrators identify items requiring immediate attention.
+
+#### ✏️ Edit Product
+- Edit icon allows administrators to update product details.
+- Supports modification of price, stock quantity, category, description, and image.
+
+#### 🗑️ Delete Product
+- Delete icon enables removal of products from inventory.
+- Ensures outdated or unavailable products can be removed safely.
+
+#### 🔄 Real-Time Inventory Updates
+- Inventory list updates automatically after:
+  - Product creation
+  - Product update
+  - Product deletion
+- Ensures the displayed data is always current.
+
+---
+
+### ✅ Purpose of the Inventory List Tab
+
+The Inventory List tab is designed to:
+- Centralize product monitoring in a single view
+- Improve inventory control and stock visibility
+- Reduce time spent managing individual products
+- Enable quick decision-making through visual stock indicators
+
+
+![Sales Analytics Demo](public/readme-assets/sales.png)
+
+## 📈 Sales Analytics Tab – Functional Summary
+
+The **Sales Analytics** tab provides administrators with **insightful revenue and performance analytics** derived from product sales data. It transforms raw sales information into **visual and ranked metrics**, enabling data-driven business decisions.
+
+### 🔹 Key Functionalities
+
+#### 💰 Total Estimated Revenue
+- Displays the **total lifetime revenue** generated across all products and categories.
+- Helps administrators assess overall store performance at a glance.
+
+#### 📊 Revenue by Category
+- Bar chart visualization showing revenue contribution from each product category.
+- Allows easy comparison of category-wise performance.
+- Helps identify high-performing and underperforming categories.
+
+#### 🏆 Top Performing Products
+- Ranks products based on **units sold**.
+- Displays:
+  - Product name
+  - Total units sold
+  - Total earnings per product
+- Helps identify best-selling and most profitable items.
+
+#### 🔄 Performance Insights
+- Combines sales volume and revenue data for clearer interpretation.
+- Enables administrators to:
+  - Optimize inventory restocking
+  - Focus on high-revenue products
+  - Improve category-level strategies
+
+#### 📡 Real-Time Data Reflection
+- Analytics update automatically when:
+  - Product sales data changes
+  - Inventory is updated
+- Ensures metrics always reflect the latest store performance.
+
+---
+
+### ✅ Purpose of the Sales Analytics Tab
+
+The Sales Analytics tab is designed to:
+- Provide actionable insights into sales performance
+- Support data-driven decision-making
+- Identify top-performing products and categories
+- Improve revenue planning and inventory optimization
