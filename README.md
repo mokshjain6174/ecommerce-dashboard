@@ -284,9 +284,9 @@ Follow the steps below to set up and run the dashboard on your local machine.
 
 Ensure the following are installed on your system:
 
-- Node.js (v18 or higher recommended)
+- Node.js
 - npm or yarn
-- MongoDB (local or cloud instance)
+- MongoDB
 
 Check installation:
 ```bash
