@@ -103,46 +103,63 @@ Secure Mutation: Actions like creating or deleting products are handled via Next
 
 
 ## 📂 Project Structure
-├── app/
-│ ├── login/
-│ │ └── page.tsx # Admin login page
-│ │
-│ ├── products/
-│ │ └── [id]/
-│ │ └── page.tsx # Server-rendered product edit page
-│ │
-│ ├── favicon.ico # Application favicon
-│ ├── globals.css # Global styles and Tailwind CSS imports
-│ ├── layout.tsx # Root layout and app-wide configuration
-│ └── page.tsx # Main dashboard page (server component)
-│
-├── components/
-│ ├── CategoryPieChart.tsx # Category-wise product distribution chart
-│ ├── Dashboard.tsx # Core dashboard layout and logic
-│ ├── DeleteButton.tsx # Product delete action component
-│ ├── ProductForm.tsx # Create/Edit product form with validation
-│ ├── ProductList.tsx # Product listing component
-│ ├── RevenueChart.tsx # Revenue visualization chart
-│ ├── SalesAnalytics.tsx # Sales analytics overview component
-│ └── StockChart.tsx # Inventory and stock level chart
-│
-├── lib/
-│ ├── actions/
-│ │ ├── auth.actions.ts # Server Actions for admin authentication
-│ │ └── product.actions.ts # Server Actions for product CRUD operations
-│ │
-│ ├── models/
-│ │ └── Product.ts # Mongoose product schema
-│ │
-│ ├── validations/
-│ │ └── product.ts # Zod schema for product validation
-│ │
-│ └── mongoose.ts # MongoDB connection handler
-│
-├── public/ # Static assets
-├── node_modules/ # Project dependencies
-└── package.json # Project metadata and scripts
+app/
+login/
 
+page.tsx – Admin login page
+
+products/
+[id]/
+
+page.tsx – Server-rendered product edit page
+
+favicon.ico – Application favicon
+
+globals.css – Global styles and Tailwind CSS imports
+
+layout.tsx – Root layout and app-wide configuration
+
+page.tsx – Main dashboard page (server component)
+
+components/
+
+CategoryPieChart.tsx – Category-wise product distribution chart
+
+Dashboard.tsx – Core dashboard layout and logic
+
+DeleteButton.tsx – Product delete action component
+
+ProductForm.tsx – Create/Edit product form with validation
+
+ProductList.tsx – Product listing component
+
+RevenueChart.tsx – Revenue visualization chart
+
+SalesAnalytics.tsx – Sales analytics overview component
+
+StockChart.tsx – Inventory and stock level chart
+
+lib/
+actions/
+
+auth.actions.ts – Server Actions for admin authentication
+
+product.actions.ts – Server Actions for product CRUD operations
+
+models/
+
+Product.ts – Mongoose product schema
+
+validations/
+
+product.ts – Zod schema for product validation
+
+mongoose.ts – MongoDB connection handler
+
+public/ – Static assets
+node_modules/ – Project dependencies
+package.json – Project metadata and scripts
+**Project Structure:** 
 ## 🧠 Key Learnings
 
 - Practical use of **Next.js Server Actions** for full-stack development  
