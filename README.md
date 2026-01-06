@@ -278,34 +278,37 @@ The Sales Analytics tab is designed to:
 
 **1️⃣ You can verify Node.js installation using:**
 node -v
+
 npm -v
 
 **2️⃣ Clone the Repository**
 git clone https://github.com/mokshjain6174/ecommerce-dashboard.git
+
 cd ecommerce-dashboard
 
 **3️⃣ Install Dependencies**
+
 npm install
 
 **4️⃣ Configure Environment Variables**
-Create a .env.local file in the root directory and add the following variables:
-# MongoDB
-MONGODB_URI=your_mongodb_connection_string
 
-# Cloudinary (Image Uploads)
+Create a .env.local file in the root directory and add the following variables:
+
+MONGODB_URI=your_mongodb_connection_string
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
-
-# Admin Login Credentials
 ADMIN_EMAIL=admin@store.com
 ADMIN_PASSWORD=1234
 
 **5️⃣ Run the Development Server**
+
 npm run dev
 
 **6️⃣ Access the Application**
+
 Open your browser and navigate to:
+
 http://localhost:3000
 
 
