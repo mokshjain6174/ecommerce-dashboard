@@ -117,10 +117,9 @@ Secure Mutation: Actions like creating or deleting products are handled via Next
 
 - Scalable project structure suitable for real production systems 
 
-
+## 📊 Dashboard Tab – Functional Summary
 ![Dashboard Demo](public/readme-assets/dashboard.png)
 
-## 📊 Dashboard Tab – Functional Summary
 
 The **Dashboard** tab serves as the **central control panel** of the e-commerce admin system. It provides administrators with a **real-time, high-level overview** of store performance, inventory status, and product distribution, enabling quick decision-making without navigating through multiple pages.
 
@@ -175,10 +174,10 @@ The Dashboard tab is designed to:
 - Centralize product management and analytics
 - Improve operational efficiency through visual data representation
 
-
+## 📦 Inventory List Tab – Functional Summary
 ![Inventory List Demo](public/readme-assets/Inventory.png)
 
-## 📦 Inventory List Tab – Functional Summary
+
 
 The **Inventory List** tab provides administrators with a **detailed, real-time view of all products** available in the system. It is designed for efficient inventory monitoring, quick product updates, and proactive stock management.
 
@@ -227,10 +226,8 @@ The Inventory List tab is designed to:
 - Reduce time spent managing individual products
 - Enable quick decision-making through visual stock indicators
 
-
-![Sales Analytics Demo](public/readme-assets/sales.png)
-
 ## 📈 Sales Analytics Tab – Functional Summary
+![Sales Analytics Demo](public/readme-assets/sales.png)
 
 The **Sales Analytics** tab provides administrators with **insightful revenue and performance analytics** derived from product sales data. It transforms raw sales information into **visual and ranked metrics**, enabling data-driven business decisions.
 
