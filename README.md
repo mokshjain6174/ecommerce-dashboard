@@ -276,21 +276,21 @@ The Sales Analytics tab is designed to:
 
 ## 🚀 Running the Project Locally
 
-**1️⃣ You can verify Node.js installation using:**
+#1️⃣ You can verify Node.js installation using:
 node -v
 
 npm -v
 
-**2️⃣ Clone the Repository**
+#2️⃣ Clone the Repository
 git clone https://github.com/mokshjain6174/ecommerce-dashboard.git
 
 cd ecommerce-dashboard
 
-**3️⃣ Install Dependencies**
+#3️⃣ Install Dependencies
 
 npm install
 
-**4️⃣ Configure Environment Variables**
+#4️⃣ Configure Environment Variables
 
 Create a .env.local file in the root directory and add the following variables:
 
@@ -306,11 +306,11 @@ ADMIN_EMAIL=admin@store.com
 
 ADMIN_PASSWORD=1234
 
-**5️⃣ Run the Development Server**
+#5️⃣ Run the Development Server
 
 npm run dev
 
-**6️⃣ Access the Application**
+#6️⃣ Access the Application
 
 Open your browser and navigate to:
 
