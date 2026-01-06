@@ -9,7 +9,7 @@ Deployment: [https://ecommerce-dashboard-lujf.vercel.app/](https://ecommerce-das
 
 Repository: [https://github.com/mokshjain6174/ecommerce-dashboard](https://github.com/mokshjain6174/ecommerce-dashboard)
 
-Demo Video: 
+Demo Video: [https://drive.google.com/file/d/1-fKD7J5cdT7rVwt8Toy8_5e8GO-Wo3M1/view?usp=sharing](https://drive.google.com/file/d/1-fKD7J5cdT7rVwt8Toy8_5e8GO-Wo3M1/view?usp=sharing)
 ---
 
 ## 🔐 Admin Login Credentials (Required)
